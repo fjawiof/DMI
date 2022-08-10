@@ -214,7 +214,7 @@ div{
           'binary_sensor\n  - platform: gpio\n    pin\n      number: &{2}\n      inverted: true\n    name: "Motion Seonsor"\n',
           'sensor\n  - platform:adc\n    pin: &{2}\n    name: "식물조명"\n    update_interval: 1s\n    filters:\n      - multiply: 3.3',
           'uart:\n  rx_pin: &{2}\n  baud_rate: 9600\nsensor:\n  - platform: pmsx003\n    type: PMSX003\n    pm_1_0:\n      name: "Particulate Matter <1.0µm Concentration"\n    pm_2_5:\n      name: "Particulate Matter <2.5µm Concentration"\n   pm_10_0:\n      name: "Particulate Matter <2.5µm Concentration"\n',
-          'sensor:\n- platform: dht\npin: &{2}\ntemperature:\nname: "temp"\nhumidity:\nname: "humi"\nupdate_interval: 2s',
+          'sensor:\n-  platform: dht\n    pin: &{2}\n    temperature:\n      name: "temp"\n    humidity:\n      name: "humi"\n    update_interval: 2s',
           '# Example configuration entry\nservo:\n  - id: my_servo\n    output: pwm_output\n# Example output platform\n# On ESP32, use ledc output\noutput:\n  - platform: esp8266_pwm\n    id: pwm_output\n    pin: &{1}\n    frequency: 50 Hz\nnumber:\n  - platform: template\n    name: Servo Control\n    min_value: -100\n    max_value: 100\n    step: 1\n    set_action:\n      then:\n        - servo.write:\n            id: my_servo\n            level: !lambda \'return x / 100.0;\''
           ];
 
