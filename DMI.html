@@ -97,31 +97,31 @@ div{
           <option value="5">5</option>
         </select>
         <select id="sensor1" name="selectbox">
-          <option value=""selected>=== 선택 ===</option>
+          <option   value1='&{2}' value2='' value3=''selected>=== 선택 ===</option>
           <!-- <option value="none">=== 선택 ===</option> -->
           <option
-            value='&{1}'
+            value1='&{1}' value2='&{1}' value3='&{1}'
             selected
           >
             적외선 센서
           </option>
           <option
-            value='&{1}'
+            value1='&{1}' value2='&{1}' value3='&{1}'
           >
             광센서
           </option>
           <option
-            value='&{1}'
+            value1='&{1}' value2='&{1}' value3='&{1}'
           >
             미세먼지센서
           </option>
           <option
-            value='&{1}'
+            value1='&{1}' value2='&{1}' value3='&{1}'
           >
             온습도센서
           </option>
           <option
-            value='&{1}'
+            value1='&{1}' value2='&{1}' value3='&{1}'
           >
             서보모터
           </option>
@@ -137,30 +137,30 @@ div{
         </select>
 
       <select id="sensor2" name="selectbox2">
-        <option value=""selected>=== 선택 ===</option>
+        <option   value1='&{2}' value2='' value3=''selected>=== 선택 ===</option>
         <option
-          value='&{2}'
+          value1='&{2}' value2='' value3=''
 
         >
           적외선 센서
         </option>
         <option
-          value='&{2}'
+          value1='&{2}' value2='' value3=''
         >
           광센서
         </option>
         <option
-          value='&{2}'
+          value1='&{2}' value2='' value3=''
         >
           미세먼지센서
         </option>
         <option
-          value='&{2}'
+          value1='&{2}' value2='' value3=''
         >
           온습도센서
         </option>
         <option
-          value='&{2}'
+          value1='&{2}' value2='' value3=''
         >
           서보모터
         </option>
@@ -174,35 +174,31 @@ div{
             <option value="4">4</option>
             <option value="5">5</option>
           </select>
-
-
-
-
         <select id="sensor3" name="selectbox2">
-          <option value=""selected>=== 선택 ===</option>
+          <option   value1='&{2}' value2='' value3=''selected>=== 선택 ===</option>
           <option
-            value='&{2}'
+            value1='&{2}' value2='' value3=''
 
           >
             적외선 센서
           </option>
           <option
-            value='&{2}'
+            value1='&{2}' value2='' value3=''
           >
             광센서
           </option>
           <option
-            value='&{2}'
+            value1='&{2}' value2='' value3=''
           >
             미세먼지센서
           </option>
           <option
-            value='&{2}'
+            value1='&{2}' value2='' value3=''
           >
             온습도센서
           </option>
           <option
-            value='&{2}'
+            value1='&{2}' value2='' value3=''
           >
             서보모터
           </option>
@@ -210,26 +206,48 @@ div{
         </div>
       </form>
       <script>
-          const boilerplates = [
-          'binary_sensor\n  - platform: gpio\n    pin\n      number: &{2}\n      inverted: true\n    name: "Motion Seonsor"\n',
-          'sensor\n  - platform:adc\n    pin: &{2}\n    name: "식물조명"\n    update_interval: 1s\n    filters:\n      - multiply: 3.3',
-          'uart:\n  rx_pin: &{2}\n  baud_rate: 9600\nsensor:\n  - platform: pmsx003\n    type: PMSX003\n    pm_1_0:\n      name: "Particulate Matter <1.0µm Concentration"\n    pm_2_5:\n      name: "Particulate Matter <2.5µm Concentration"\n   pm_10_0:\n      name: "Particulate Matter <2.5µm Concentration"\n',
-          'sensor:\n-  platform: dht\n    pin: &{2}\n    temperature:\n      name: "temp"\n    humidity:\n      name: "humi"\n    update_interval: 2s',
+          const first = [
+          ' ',
+          ' ',
+          'rx_pin: &{2}\n  baud_rate: 9600\n',
+          ' ',
+          ' '
+        ].filter((v) => !!v);
+          const second = [
+          ' ',
+          '- platform:adc\n    pin: &{2}\n    name: "식물조명"\n    update_interval: 1s\n    filters:\n      - multiply: 3.3',
+          '- platform: pmsx003\n    type: PMSX003\n    pm_1_0:\n      name: "Particulate Matter <1.0µm Concentration"\n    pm_2_5:\n      name: "Particulate Matter <2.5µm Concentration"\n   pm_10_0:\n      name: "Particulate Matter <2.5µm Concentration"\n',
+          '- platform: dht\n    pin: &{2}\n    temperature:\n      name: "temp"\n    humidity:\n      name: "humi"\n    update_interval: 2s',
           '# Example configuration entry\nservo:\n  - id: my_servo\n    output: pwm_output\n# Example output platform\n# On ESP32, use ledc output\noutput:\n  - platform: esp8266_pwm\n    id: pwm_output\n    pin: &{2}\n    frequency: 50 Hz\nnumber:\n  - platform: template\n    name: Servo Control\n    min_value: -100\n    max_value: 100\n    step: 1\n    set_action:\n      then:\n        - servo.write:\n            id: my_servo\n            level: !lambda \'return x / 100.0;\''
-          ];
-
+          ].filter((v) => !!v);
+          const third = [
+          '- platform: gpio\n    pin\n      number: &{2}\n      inverted: true\n    name: "Motion Seonsor"\n',
+          ' ',
+          ' ',
+          ' ',
+          ' '
+          ].filter((v) => !!v);
           window.onload = () => {
             console.log("integration onload");
             var defaultPinNumber = 1;
             for (let i = 1; i < 6 ; ++i) {
-              const replaced = boilerplates[i - 1].replace("&{2}", defaultPinNumber);
-              //console.log(replaced);
-              document.getElementById("sensor1").options[i].value = replaced;
-              document.getElementById("sensor2").options[i].value = replaced;
-              document.getElementById("sensor3").options[i].value = replaced;
+              const replaced1 = first[i - 1].replace("&{2}", defaultPinNumber);
+              const replaced2 = second[i - 1].replace("&{2}", defaultPinNumber);
+              const replaced3 = third[i - 1].replace("&{2}", defaultPinNumber);
+              //onsole.log(replaced1);
+              //console.log(replaced2);
+              //console.log(replaced3);
+              document.getElementById("sensor1").options[i].value1 = replaced1;
+              document.getElementById("sensor1").options[i].value2 = replaced2;
+              document.getElementById("sensor1").options[i].value3 = replaced3;
+              document.getElementById("sensor2").options[i].value1 = replaced1;
+              document.getElementById("sensor2").options[i].value2 = replaced2;
+              document.getElementById("sensor2").options[i].value3 = replaced3;
+              document.getElementById("sensor3").options[i].value1 = replaced1;
+              document.getElementById("sensor3").options[i].value2 = replaced2;
+              document.getElementById("sensor3").options[i].value3 = replaced3;
             }
           }
-
           const pin1 = document.getElementById("pin1");
           const pin2 = document.getElementById("pin2");
           const pin3 = document.getElementById("pin3");
@@ -237,10 +255,14 @@ div{
           pin1.onchange = () => {
             console.log("pin1 onchange");
             const options = document.getElementById("sensor1").options;
+
             for (let i = 1; i < 6 ; ++i) {
-              const replaced = boilerplates[i - 1].replace("&{2}", pin1.value);
-              //console.log(replaced);
-              document.getElementById("sensor1").options[i].value = replaced;
+              const replaced1 = first[i - 1].replace("&{2}", pin1.value);
+              const replaced2 = second[i - 1].replace("&{2}", pin1.value);
+              const replaced3 = third[i - 1].replace("&{2}", pin1.value);
+              document.getElementById("sensor1").options[i].value1 = replaced1;
+              document.getElementById("sensor1").options[i].value2 = replaced2;
+              document.getElementById("sensor1").options[i].value3 = replaced3;
             }
           }
 
@@ -248,29 +270,76 @@ div{
             console.log("pin2 onchange");
             const options = document.getElementById("sensor2").options;
             for (let i = 1; i < 6 ; ++i) {
-              const replaced = boilerplates[i - 1].replace("&{2}", pin2.value);
+              const replaced1 = first[i - 1].replace("&{2}", pin2.value);
+              const replaced2 = second[i - 1].replace("&{2}", pin2.value);
+              const replaced3 = third[i - 1].replace("&{2}", pin2.value);
               //console.log(replaced);
-              document.getElementById("sensor2").options[i].value = replaced;
+              document.getElementById("sensor2").options[i].value1 = replaced1;
+              document.getElementById("sensor2").options[i].value2 = replaced2;
+              document.getElementById("sensor2").options[i].value3 = replaced3;
             }
           }
           pin3.onchange = () => {
             console.log("pin3 onchange");
             const options = document.getElementById("sensor3").options;
             for (let i = 1; i < 6 ; ++i) {
-              const replaced = boilerplates[i - 1].replace("&{2}", pin3.value);
+              const replaced1 = first[i - 1].replace("&{2}", pin3.value);
+              const replaced2 = second[i - 1].replace("&{2}", pin3.value);
+              const replaced3 = third[i - 1].replace("&{2}", pin3.value);
               //console.log(replaced);
-              document.getElementById("sensor3").options[i].value = replaced;
+              document.getElementById("sensor3").options[i].value1 = replaced1;
+              document.getElementById("sensor3").options[i].value2 = replaced2;
+              document.getElementById("sensor3").options[i].value3 = replaced3;
             }
           }
-      </script>
+          </script>
 
-      <script>
-        function text_download() {
+          <script>
+        function text_download () {
           var chk = isIE(); // IE(true)
           var date = new Date();
-          var hihi = document.getElementById("sensor1").value;
-          var hihi2 = document.getElementById("sensor2").value;
-          var hihi3 = document.getElementById("sensor3").value;
+          var i = document.getElementById("sensor1").options.selectedIndex;
+          var i2 = document.getElementById("sensor2").options.selectedIndex;
+          var i3 = document.getElementById("sensor3").options.selectedIndex;
+          var hihi1 = document.getElementById("sensor1").options[i].value1;
+          if( hihi1 == undefined ) {
+ hihi1 = "";
+}
+          var hello1 = document.getElementById("sensor1").options[i].value2;
+          if( hello1 == undefined ) {
+ hello1 = "";
+}
+          if( hihi1 == undefined ) {
+ hihi1 = "";
+}
+          var bye1 = document.getElementById("sensor1").options[i].value3;
+          if( bye1 == undefined ) {
+ bye1 = "";
+}
+          var hihi2 = document.getElementById("sensor2").options[i2].value1;
+          if( hihi2 == undefined ) {
+ hihi2 = "";
+}
+          var hello2 = document.getElementById("sensor2").options[i2].value2;
+          if( hello2 == undefined ) {
+ hello2 = "";
+}
+          var bye2 = document.getElementById("sensor2").options[i2].value3;
+          if( bye2 == undefined ) {
+ bye2 = "";
+}
+          var hihi3 = document.getElementById("sensor3").options[i3].value1;
+          if( hihi3 == undefined ) {
+ hihi3 = "";
+}
+          var hello3 = document.getElementById("sensor3").options[i3].value2;
+          if( hello3 == undefined ) {
+ hello3 = "";
+}
+          var bye3 = document.getElementById("sensor3").options[i3].value3;
+          if( bye3 == undefined ) {
+ bye3 = "";
+}
           var fileName =
             "sensor" +
             date.getFullYear() +
@@ -287,12 +356,31 @@ div{
             "  board: esp01_1m\n" +
             "# Enable logging\n" +
             "logger:\n" +
+            "urt:\n"+
             "" +
-            hihi +
-            ""+
+            hihi1 +
+            "" +
             hihi2 +
-            ""+
+            "" +
             hihi3 +
+            "\n" +
+            "sensor:\n"+
+            "" +
+            hello1+
+            ""+
+            hello2+
+            ""+
+            hello3+
+            "\n" +
+            ""+
+            "binary_sensor:\n"+
+            "" +
+            bye1+
+            ""+
+            bye2+
+            ""+
+            bye3+
+            ""+
             "\n" +
             "# Enable Home Assistant API" +
             "api:\n" +
@@ -358,9 +446,10 @@ div{
         }
 
         //]]>
+
       </script>
       <div>
-      <button class="btn" type="button" onClick="text_download()">등록하기</button>
-</div>
+      <button class="btn" type="button" onclick="text_download()">등록하기</button>
+    </div>
     </body></html
 ></h<!doctype>
